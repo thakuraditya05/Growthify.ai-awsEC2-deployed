@@ -1,44 +1,172 @@
-import React, { useContext } from "react";
-import { Settings as SettingsIcon, User, Bell, Lock, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { C, font } from "../theme/theme.js";
-import { Context } from "../context/AuthContext.jsx";
+import React, { useState } from "react";
+import { ShieldCheck, User, Globe } from "lucide-react"; // Globe icon add kiya
+import { font } from "../theme/theme.js";
+import SettingsItem from "./SettingsItem.jsx";
+import AccountTab from "./AccountTab.jsx";
+import SecurityTab from "./SecurityTab.jsx";
+import SocialMediaTab from "./SocialMediaTab.jsx"; // Naya component import kiya
+import styles from "./settings.module.css";
 
 const Settings = () => {
-  const navigate = useNavigate();
-  const { logout } = useContext(Context);
+  const [activeTab, setActiveTab] = useState(null);
+  
+  // Global Error/Success states for the page
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
+  const clearAlerts = () => {
+    setError("");
+    setSuccess("");
+  };
+
+  const handleTabToggle = (tabName) => {
+    setActiveTab(activeTab === tabName ? null : tabName);
+    clearAlerts(); // Clear alerts when switching tabs
   };
 
   return (
-    <div style={{ fontFamily: font }}>
-      <h2 style={{ color: C.textPrimary, fontSize: 22, fontWeight: 700, display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
-        <SettingsIcon color={C.accent} /> Settings
-      </h2>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {[
-          { icon: User, label: "Account Information" },
-          { icon: Bell, label: "Notification Preferences" },
-          { icon: Lock, label: "Privacy & Security" },
-        ].map((item, i) => (
-          <div key={i} style={{ background: C.bgCard, padding: 16, borderRadius: 12, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: 15, cursor: "pointer" }}>
-            <item.icon size={20} color={C.accent} />
-            <span style={{ color: C.textPrimary, fontSize: 14 }}>{item.label}</span>
-          </div>
-        ))}
-      </div>
+    <div className={styles.container} style={{ fontFamily: font }}>
+      <h1 className={styles.title}>Settings</h1>
 
-      <button
-        onClick={handleLogout}
-        style={{ marginTop: 20, background: "rgba(255, 69, 58, 0.1)", color: "#ff453a", border: "1px solid rgba(255, 69, 58, 0.3)", borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}
+      {/* Global Alert Box */}
+      {(error || success) && (
+        <div className={`${styles.alert} ${error ? styles.error : styles.success}`}>
+          {error || success}
+        </div>
+      )}
+
+      {/* --- ACCOUNT INFORMATION TAB --- */}
+      <SettingsItem
+        icon={User}
+        label="Account Information"
+        isOpen={activeTab === "account"}
+        onClick={() => handleTabToggle("account")}
       >
-        <LogOut size={16} /> Logout
-      </button>
+        <AccountTab 
+          isOpen={activeTab === "account"} 
+          onError={setError} 
+          onSuccess={setSuccess} 
+        />
+      </SettingsItem>
+
+      {/* --- SOCIAL MEDIA CONNECTION TAB (NEW) --- */}
+      <SettingsItem
+        icon={Globe}
+        label="Social Media Connections"
+        isOpen={activeTab === "social"}
+        onClick={() => handleTabToggle("social")}
+      >
+        <SocialMediaTab 
+          isOpen={activeTab === "social"} 
+          onError={setError} 
+          onSuccess={setSuccess} 
+        />
+      </SettingsItem>
+
+      {/* --- PRIVACY & SECURITY TAB --- */}
+      <SettingsItem
+        icon={ShieldCheck}
+        label="Privacy & Security"
+        isOpen={activeTab === "security"}
+        onClick={() => handleTabToggle("security")}
+      >
+        <SecurityTab 
+          onError={setError} 
+          onSuccess={setSuccess} 
+        />
+      </SettingsItem>
+
     </div>
   );
 };
 
 export default Settings;
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState } from "react";
+// import { ShieldCheck, User } from "lucide-react";
+// import { font } from "../theme/theme.js";
+// import SettingsItem from "./SettingsItem.jsx";
+// import AccountTab from "./AccountTab.jsx";
+// import SecurityTab from "./SecurityTab.jsx";
+// import styles from "./settings.module.css";
+
+// const Settings = () => {
+//   const [activeTab, setActiveTab] = useState(null);
+  
+//   // Global Error/Success states for the page
+//   const [error, setError] = useState("");
+//   const [success, setSuccess] = useState("");
+
+//   const clearAlerts = () => {
+//     setError("");
+//     setSuccess("");
+//   };
+
+//   const handleTabToggle = (tabName) => {
+//     setActiveTab(activeTab === tabName ? null : tabName);
+//     clearAlerts(); // Clear alerts when switching tabs
+//   };
+
+//   return (
+//     <div className={styles.container} style={{ fontFamily: font }}>
+//       <h1 className={styles.title}>Settings</h1>
+
+//       {/* Global Alert Box */}
+//       {(error || success) && (
+//         <div className={`${styles.alert} ${error ? styles.error : styles.success}`}>
+//           {error || success}
+//         </div>
+//       )}
+
+//       {/* --- ACCOUNT INFORMATION TAB --- */}
+//       <SettingsItem
+//         icon={User}
+//         label="Account Information"
+//         isOpen={activeTab === "account"}
+//         onClick={() => handleTabToggle("account")}
+//       >
+//         <AccountTab 
+//           isOpen={activeTab === "account"} 
+//           onError={setError} 
+//           onSuccess={setSuccess} 
+//         />
+//       </SettingsItem>
+
+//       {/* --- PRIVACY & SECURITY TAB --- */}
+//       <SettingsItem
+//         icon={ShieldCheck}
+//         label="Privacy & Security"
+//         isOpen={activeTab === "security"}
+//         onClick={() => handleTabToggle("security")}
+//       >
+//         <SecurityTab 
+//           onError={setError} 
+//           onSuccess={setSuccess} 
+//         />
+//       </SettingsItem>
+
+//     </div>
+//   );
+// };
+
+// export default Settings;
+
+
+
+
+
+
+
+
+
