@@ -33,7 +33,10 @@ async function collectTrendingVideos() {
       title: video.snippet.title,
       description: video.snippet.description,
       publishedAt: new Date(video.snippet.publishedAt),
-      categoryId: video.snippet.categoryId
+      categoryId: video.snippet.categoryId,
+      views: Number(video.statistics?.viewCount || 0),
+      likes: Number(video.statistics?.likeCount || 0),
+      comments: Number(video.statistics?.commentCount || 0)
     }));
 
     if (docs.length) {

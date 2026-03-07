@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Loader2, Sparkles, Send, Save } from "lucide-react";
@@ -31,10 +31,10 @@ const normalizeHashtags = (hashtags) => {
     .filter(Boolean);
 };
 
-const ContentGenerator = ({ linkedProjectId = "" }) => {
+const ContentGenerator = ({ linkedProjectId = "", generatorData = {}, onDataUsed = () => {} }) => {
   const [formData, setFormData] = useState({
-    topic: "",
-    platform: "youtube",
+    topic: generatorData.topic || "",
+    platform: generatorData.platform || "youtube",
     niche: "",
     promptType: "Storytelling",
   });
@@ -54,12 +54,35 @@ const ContentGenerator = ({ linkedProjectId = "" }) => {
 
   const { projects, loading: projectsLoading, fetchProjects } = useProjects();
   const isLinkedMode = Boolean(linkedProjectId);
+  const isInitialized = useRef(false);
 
   useEffect(() => {
     if (!linkedProjectId) return;
     setSaveMode("existing");
     setSelectedProjectId(linkedProjectId);
   }, [linkedProjectId]);
+
+  useEffect(() => {
+    // Only initialize once when generatorData has values
+    if (isInitialized.current || (!generatorData.topic && !generatorData.platform)) return;
+    
+    if (generatorData.topic || generatorData.platform) {
+      isInitialized.current = true;
+      setFormData((prev) => {
+        let normalizedPlatform = generatorData.platform || prev.platform;
+        if (normalizedPlatform) {
+          normalizedPlatform = normalizedPlatform.toLowerCase();
+        }
+        
+        return {
+          ...prev,
+          topic: generatorData.topic || prev.topic,
+          platform: normalizedPlatform || prev.platform,
+        };
+      });
+      onDataUsed();
+    }
+  }, []);
 
   const displayTitle = useMemo(() => {
     if (!generated?.title) return "Generated Content";
@@ -255,9 +278,10 @@ const ContentGenerator = ({ linkedProjectId = "" }) => {
                 style={{ width: "100%", marginTop: 6, background: C.bgSidebar, border: `1px solid ${C.border}`, color: C.textPrimary, borderRadius: 8, padding: "10px 12px" }}
               >
                 <option value="youtube">YouTube</option>
-                <option value="instagram">Instagram</option>
-                <option value="x">X</option>
+                <option value="youtube_music">YouTube Music</option>
                 <option value="reddit">Reddit</option>
+                <option value="x">X (Twitter)</option>
+                <option value="instagram">Instagram</option>
               </select>
             </div>
 

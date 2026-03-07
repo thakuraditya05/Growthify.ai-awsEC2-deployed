@@ -7,7 +7,8 @@ import Topbar from "../components/layout/Topbar.jsx";
 import Sidebar from "../components/layout/Sidebar.jsx";
 
 import Home from "./Home.jsx";
-import Trends from "./Trends/Trends.jsx"; 
+import Trends from "./Trends/Trends.jsx";
+import Saves from "./Saves.jsx"; 
 import ContentGenerator from "./ContentGenerator/ContentGenerator.jsx"; 
 import Projects from "./Projects/Projects.jsx"; 
 import Schedule from "./Schedule.jsx"; 
@@ -19,6 +20,7 @@ const DashboardLayout = () => {
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [workspaceProjectId, setWorkspaceProjectId] = useState("");
   const [linkedProjectId, setLinkedProjectId] = useState("");
+  const [contentGeneratorData, setContentGeneratorData] = useState({ topic: "", platform: "youtube" });
 
   const createProject = async () => {
     try {
@@ -49,11 +51,17 @@ const DashboardLayout = () => {
     setActiveNav("Thumbnail Studio");
   };
 
+  const handleAddToProject = (topic, platform) => {
+    setContentGeneratorData({ topic, platform });
+    setActiveNav("Content Generator");
+  };
+
   const renderContent = () => {
     switch (activeNav) {
       case "Dashboard": return <Home onNavigate={handleNavigate} />;
       case "Trends": return <Trends />;
-      case "Content Generator": return <ContentGenerator linkedProjectId={linkedProjectId} />; 
+      case "Saves": return <Saves onAddToProject={handleAddToProject} />;
+      case "Content Generator": return <ContentGenerator linkedProjectId={linkedProjectId} generatorData={contentGeneratorData} onDataUsed={() => setContentGeneratorData({ topic: "", platform: "youtube" })} />; 
       case "Thumbnail Studio": return <ThumbnailStudio linkedProjectId={linkedProjectId} />;
       case "Projects": return <Projects />;   
       case "Project Workspace":

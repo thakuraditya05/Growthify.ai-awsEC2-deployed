@@ -31,6 +31,21 @@ const trendingVideoSchema = new mongoose.Schema({
     categoryId: {
         type: String,
         default: ""
+    },
+
+    views: {
+        type: Number,
+        default: 0
+    },
+
+    likes: {
+        type: Number,
+        default: 0
+    },
+
+    comments: {
+        type: Number,
+        default: 0
     }
 
 });

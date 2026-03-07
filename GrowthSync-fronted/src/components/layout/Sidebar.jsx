@@ -1,10 +1,11 @@
 import React from "react";
-import { LayoutGrid, TrendingUp, Sparkles, Image, Folder, Calendar, Settings } from "lucide-react";
+import { LayoutGrid, TrendingUp, Sparkles, Image, Folder, Calendar, Settings, Bookmark } from "lucide-react";
 import { C, font } from "../../theme/theme.js";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutGrid },
   { label: "Trends", icon: TrendingUp },
+  { label: "Saves", icon: Bookmark },
   { label: "Content Generator", icon: Sparkles },
   { label: "Thumbnail Studio", icon: Image },
   { label: "Projects", icon: Folder },

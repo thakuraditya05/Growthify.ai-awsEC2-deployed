@@ -9,30 +9,70 @@ const Grid = ({ children }) => (
   </div>
 );
 
-export const YoutubeTrends = ({ data }) => (
+export const YoutubeTrends = ({ data, savedTrendIds, onSave, onRemove }) => (
   <Grid>
-    {data?.length > 0 ? data.map((t, i) => <TrendCard key={i} trend={t} icon={<Youtube size={16} color="#ff0000" />} />) 
+    {data?.length > 0 ? data.map((t, i) => (
+      <TrendCard 
+        key={i} 
+        trend={t} 
+        platform="youtube"
+        icon={<Youtube size={16} color="#ff0000" />}
+        isSaved={savedTrendIds?.includes(t.videoId || t._id)}
+        onSave={onSave}
+        onRemove={onRemove}
+      />
+    )) 
     : <p style={{ color: C.textSecondary }}>No YouTube trends.</p>}
   </Grid>
 );
 
-export const RedditTrends = ({ data }) => (
+export const RedditTrends = ({ data, savedTrendIds, onSave, onRemove }) => (
   <Grid>
-    {data?.length > 0 ? data.map((t, i) => <TrendCard key={i} trend={t} icon={<MessageCircle size={16} color="#FF4500" />} />) 
+    {data?.length > 0 ? data.map((t, i) => (
+      <TrendCard 
+        key={i} 
+        trend={t} 
+        platform="reddit"
+        icon={<MessageCircle size={16} color="#FF4500" />}
+        isSaved={savedTrendIds?.includes(t.postId || t._id)}
+        onSave={onSave}
+        onRemove={onRemove}
+      />
+    )) 
     : <p style={{ color: C.textSecondary }}>No Reddit trends.</p>}
   </Grid>
 );
 
-export const XTrends = ({ data }) => (
+export const XTrends = ({ data, savedTrendIds, onSave, onRemove }) => (
   <Grid>
-    {data?.length > 0 ? data.map((t, i) => <TrendCard key={i} trend={t} icon={<Twitter size={16} color="#1DA1F2" />} />) 
+    {data?.length > 0 ? data.map((t, i) => (
+      <TrendCard 
+        key={i} 
+        trend={t} 
+        platform="X"
+        icon={<Twitter size={16} color="#1DA1F2" />}
+        isSaved={savedTrendIds?.includes(t.tweetId || t._id)}
+        onSave={onSave}
+        onRemove={onRemove}
+      />
+    )) 
     : <p style={{ color: C.textSecondary }}>No X trends.</p>}
   </Grid>
 );
 
-export const MusicTrends = ({ data }) => (
+export const MusicTrends = ({ data, savedTrendIds, onSave, onRemove }) => (
   <Grid>
-    {data?.length > 0 ? data.map((t, i) => <TrendCard key={i} trend={t} icon={<Music size={16} color="#ff0000" />} />) 
+    {data?.length > 0 ? data.map((t, i) => (
+      <TrendCard 
+        key={i} 
+        trend={t} 
+        platform="youtube_music"
+        icon={<Music size={16} color="#ff0000" />}
+        isSaved={savedTrendIds?.includes(t.videoId || t._id)}
+        onSave={onSave}
+        onRemove={onRemove}
+      />
+    )) 
     : <p style={{ color: C.textSecondary }}>No Music trends.</p>}
   </Grid>
 );
