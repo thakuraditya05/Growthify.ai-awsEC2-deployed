@@ -8,10 +8,10 @@ import Sidebar from "../components/layout/Sidebar.jsx";
 
 import Home from "./Home.jsx";
 import Trends from "./Trends/Trends.jsx";
-import Saves from "./Saves.jsx"; 
-import ContentGenerator from "./ContentGenerator/ContentGenerator.jsx"; 
-import Projects from "./Projects/Projects.jsx"; 
-import Schedule from "./Schedule.jsx"; 
+import Saves from "./Saves.jsx";
+import ContentGenerator from "./ContentGenerator/ContentGenerator.jsx";
+import Projects from "./Projects/Projects.jsx";
+import Schedule from "./Schedule.jsx";
 import Settings from "./Settings.jsx";
 import ThumbnailStudio from "./ThumbnailStudio/ThumbnailStudio.jsx";
 import ProjectWorkspace from "./ProjectWorkspace.jsx";
@@ -20,7 +20,10 @@ const DashboardLayout = () => {
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [workspaceProjectId, setWorkspaceProjectId] = useState("");
   const [linkedProjectId, setLinkedProjectId] = useState("");
-  const [contentGeneratorData, setContentGeneratorData] = useState({ topic: "", platform: "youtube" });
+  const [contentGeneratorData, setContentGeneratorData] = useState({
+    topic: "",
+    platform: "youtube",
+  });
 
   const createProject = async () => {
     try {
@@ -51,19 +54,38 @@ const DashboardLayout = () => {
     setActiveNav("Thumbnail Studio");
   };
 
-  const handleAddToProject = (topic, platform) => {
-    setContentGeneratorData({ topic, platform });
-    setActiveNav("Content Generator");
+  const openProjectWorkspace = (projectId) => {
+    setWorkspaceProjectId(projectId);
+    setActiveNav("Project Workspace");
   };
 
   const renderContent = () => {
     switch (activeNav) {
-      case "Dashboard": return <Home onNavigate={handleNavigate} />;
-      case "Trends": return <Trends />;
-      case "Saves": return <Saves onAddToProject={handleAddToProject} />;
-      case "Content Generator": return <ContentGenerator linkedProjectId={linkedProjectId} generatorData={contentGeneratorData} onDataUsed={() => setContentGeneratorData({ topic: "", platform: "youtube" })} />; 
-      case "Thumbnail Studio": return <ThumbnailStudio linkedProjectId={linkedProjectId} />;
-      case "Projects": return <Projects />;   
+      case "Dashboard":
+        return (
+          <Home
+            onNavigate={handleNavigate}
+            onProjectClick={openProjectWorkspace}
+          />
+        );
+      case "Trends":
+        return <Trends />;
+      case "Saves":
+        return <Saves onAddToProject={handleAddToProject} />;
+      case "Content Generator":
+        return (
+          <ContentGenerator
+            linkedProjectId={linkedProjectId}
+            generatorData={contentGeneratorData}
+            onDataUsed={() =>
+              setContentGeneratorData({ topic: "", platform: "youtube" })
+            }
+          />
+        );
+      case "Thumbnail Studio":
+        return <ThumbnailStudio linkedProjectId={linkedProjectId} />;
+      case "Projects":
+        return <Projects />;
       case "Project Workspace":
         return (
           <ProjectWorkspace
@@ -72,14 +94,25 @@ const DashboardLayout = () => {
             onGoToThumbnail={openThumbnailForProject}
           />
         );
-      case "Schedule": return <Schedule />;   
-      case "Settings": return <Settings />;   
-      default: return <Home onNavigate={handleNavigate} />;
+      case "Schedule":
+        return <Schedule />;
+      case "Settings":
+        return <Settings />;
+      default:
+        return <Home onNavigate={handleNavigate} />;
     }
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: C.bgPage, fontFamily: font, display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: C.bgPage,
+        fontFamily: font,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Topbar onCreateProject={createProject} />
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
         <Sidebar activeItem={activeNav} onNavigate={handleNavigate} />

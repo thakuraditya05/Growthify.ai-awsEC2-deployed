@@ -104,14 +104,30 @@ const ThumbnailStudio = ({ linkedProjectId = "" }) => {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!generatedThumbnail) return;
-    const link = document.createElement('a');
-    link.href = generatedThumbnail;
-    link.download = `GrowthSync_${formData.title || 'Thumbnail'}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+
+    try {
+      const response = await axios.get("/api/ai/download-thumbnail", {
+        params: {
+          url: generatedThumbnail,
+          title: formData.title || "Thumbnail",
+        },
+        responseType: "blob",
+      });
+      const objectUrl = URL.createObjectURL(response.data);
+      const safeTitle = (formData.title || "Thumbnail").replace(/[\\/:*?"<>|]/g, "_");
+
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = `GrowthSync_${safeTitle}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error("Thumbnail download error:", error);
+    }
   };
 
   return (
@@ -289,9 +305,6 @@ const ThumbnailStudio = ({ linkedProjectId = "" }) => {
                 ) : generatedThumbnail ? (
                   <>
                     <img src={generatedThumbnail} alt="AI Generated Thumbnail" className={styles.thumbnailImage} style={{ width: '100%', height: 'auto', display: 'block' }}/>
-                    <button className={styles.downloadBtn} onClick={handleDownload} style={{ position: 'absolute', bottom: '16px', right: '16px' }}>
-                      <Download size={14} /> Download High-Res
-                    </button>
                   </>
                 ) : (
                   <div style={{color: C.textMuted, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, padding: '60px'}}>
@@ -300,6 +313,13 @@ const ThumbnailStudio = ({ linkedProjectId = "" }) => {
                   </div>
                 )}
               </div>
+              {generatedThumbnail && (
+                <div style={{ marginTop: "12px", display: "flex", justifyContent: "center" }}>
+                  <button className={styles.downloadBtn} onClick={handleDownload} style={{ position: "static" }}>
+                    <Download size={14} /> Download Thumbnail
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

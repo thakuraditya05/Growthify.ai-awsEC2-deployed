@@ -5,7 +5,10 @@ import {
   refineContent,
   saveContentToProject,
 } from "../controllers/AI logic/contentGenerator.js";
-import { generateThumbnail } from "../controllers/AI logic/thumbnailGenerator.js";
+import {
+  generateThumbnail,
+  downloadThumbnail,
+} from "../controllers/AI logic/thumbnailGenerator.js";
 
 const router = express.Router();
 
@@ -14,6 +17,7 @@ router.post("/refine-content", authMiddleware, refineContent);
 router.post("/save-content", authMiddleware, saveContentToProject);
 
 router.post("/generate-thumbnail", authMiddleware, generateThumbnail);
+router.get("/download-thumbnail", authMiddleware, downloadThumbnail);
 
 
 

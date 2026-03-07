@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Bell, Plus, Rocket, LogOut } from "lucide-react";
+import { Plus, Rocket, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../context/AuthContext.jsx";
 
@@ -26,9 +26,6 @@ const Topbar = ({ onCreateProject }) => {
         <span className="text-brand-textPrimary font-bold text-lg tracking-tight">GrowthSync</span>
       </div>
       <div className="flex items-center gap-4">
-        <button className="p-2 text-brand-textSecondary hover:bg-white/5 rounded-lg transition-colors relative">
-          <Bell size={18} /><span className="absolute top-2 right-2 w-2 h-2 bg-brand-accent rounded-full border-2 border-brand-topbar" />
-        </button>
         <button onClick={onCreateProject} className="flex items-center gap-1.5 bg-brand-accent text-brand-page px-4 py-1.5 rounded-full font-bold text-xs hover:opacity-90">
           <Plus size={16} strokeWidth={3} /> New Project
         </button>

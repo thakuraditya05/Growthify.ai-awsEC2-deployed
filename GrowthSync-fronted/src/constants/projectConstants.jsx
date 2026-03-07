@@ -1,14 +1,62 @@
 import React from "react";
-import { Youtube, Instagram, Twitter, MessageCircle, Globe } from "lucide-react";
-
+import {
+  Youtube,
+  Instagram,
+  Twitter,
+  MessageCircle,
+  Globe,
+} from "lucide-react";
 
 export const dummyProjects = [
-  { id: 1, title: "AI vs Jobs: The Reality", status: "Draft", platform: "YouTube", platformId: "yt", date: "Feb 12, 2026", image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=500&auto=format&fit=crop", views: "N/A", niche: "Technology" },
-  { id: 2, title: "React 19 Server Components", status: "In Progress", platform: "Instagram", platformId: "insta", date: "Feb 11, 2026", image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=500&auto=format&fit=crop", views: "N/A", niche: "Web Dev" },
-  { id: 3, title: "My Workflow Secrets", status: "Published", platform: "Threads (X)", platformId: "x", date: "Feb 09, 2026", image: "https://images.unsplash.com/photo-1555421689-491a97ff2040?q=80&w=500&auto=format&fit=crop", views: "14.2K", niche: "Productivity" },
-  { id: 4, title: "Midjourney v6 Prompts", status: "Draft", platform: "Reddit", platformId: "reddit", date: "Feb 08, 2026", image: "https://images.unsplash.com/photo-1684369175836-9a291f42d207?q=80&w=500&auto=format&fit=crop", views: "N/A", niche: "AI Art" },
+  {
+    id: 1,
+    title: "AI vs Jobs: The Reality",
+    status: "Draft",
+    platform: "YouTube",
+    platformId: "yt",
+    date: "Feb 12, 2026",
+    image:
+      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=500&auto=format&fit=crop",
+    views: "N/A",
+    niche: "Technology",
+  },
+  {
+    id: 2,
+    title: "React 19 Server Components",
+    status: "Draft",
+    platform: "Instagram",
+    platformId: "insta",
+    date: "Feb 11, 2026",
+    image:
+      "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=500&auto=format&fit=crop",
+    views: "N/A",
+    niche: "Web Dev",
+  },
+  {
+    id: 3,
+    title: "My Workflow Secrets",
+    status: "Published",
+    platform: "Threads (X)",
+    platformId: "x",
+    date: "Feb 09, 2026",
+    image:
+      "https://images.unsplash.com/photo-1555421689-491a97ff2040?q=80&w=500&auto=format&fit=crop",
+    views: "14.2K",
+    niche: "Productivity",
+  },
+  {
+    id: 4,
+    title: "Midjourney v6 Prompts",
+    status: "Draft",
+    platform: "Reddit",
+    platformId: "reddit",
+    date: "Feb 08, 2026",
+    image:
+      "https://images.unsplash.com/photo-1684369175836-9a291f42d207?q=80&w=500&auto=format&fit=crop",
+    views: "N/A",
+    niche: "AI Art",
+  },
 ];
-
 
 // Helper: Backend ke platform string ko icon id me convert karne ke liye
 export const getPlatformId = (platformString) => {
@@ -24,10 +72,13 @@ export const getPlatformId = (platformString) => {
 // Helper: UI Colors based on Database Status
 export const getStatusStyle = (status) => {
   const s = (status || "draft").toLowerCase();
-  if (s === "draft") return { bg: "rgba(240, 165, 0, 0.15)", color: "#f0a500", label: "Draft" };
-  if (s === "in-progress" || s === "in progress") return { bg: "rgba(59, 130, 246, 0.15)", color: "#3b82f6", label: "In Progress" };
-  if (s === "scheduled") return { bg: "rgba(168, 85, 247, 0.15)", color: "#a855f7", label: "Scheduled" };
-  return { bg: "rgba(0, 230, 195, 0.15)", color: "#00E6C3", label: "Published" };
+  if (s === "draft")
+    return { bg: "rgba(240, 165, 0, 0.15)", color: "#f0a500", label: "Draft" };
+  return {
+    bg: "rgba(0, 230, 195, 0.15)",
+    color: "#00E6C3",
+    label: "Published",
+  };
 };
 
 // Helper: Render Icon
@@ -38,21 +89,6 @@ export const getPlatformIcon = (id, size = 16) => {
   if (id === "reddit") return <MessageCircle size={size} color="#FF4500" />;
   return <Globe size={size} color="#8FB7B5" />; // Fallback icon
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React from "react";
 // import { Youtube, Instagram, Twitter, MessageCircle } from "lucide-react";

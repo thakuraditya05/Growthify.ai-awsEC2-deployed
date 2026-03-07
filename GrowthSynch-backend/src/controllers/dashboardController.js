@@ -13,11 +13,6 @@ export const getDashboardStats = async (req, res) => {
       status: "draft",
     });
 
-    const scheduledCount = await Project.countDocuments({
-      user: userId,
-      status: "scheduled",
-    });
-
     const publishedCount = await Project.countDocuments({
       user: userId,
       status: "published",
@@ -41,7 +36,6 @@ export const getDashboardStats = async (req, res) => {
     res.json({
       totalProjects,
       draftCount,
-      scheduledCount,
       publishedCount,
       publishedThisWeek,
       recentProjects,

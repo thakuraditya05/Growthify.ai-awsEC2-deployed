@@ -2,6 +2,7 @@ import { generateTextFromAI } from "../../services/aiService.js";
 import { generateThumbnailImage } from "../../services/thumbnailService.js";
 import Project from "../../models/Project.js";
 import { logError } from "../../utils/logger.js";
+import axios from "axios";
 
 export const generateThumbnail = async (req, res) => {
   try {
@@ -95,7 +96,7 @@ Return ONLY the final image generation prompt.
     if (targetProject) {
       targetProject.thumbnailUrl = imageUrl;
       targetProject.title = title;
-      targetProject.status = "in-progress";
+      targetProject.status = "draft";
 
       await targetProject.save();
 
@@ -127,5 +128,51 @@ Return ONLY the final image generation prompt.
       message: error?.message || "Thumbnail generation failed",
       details: error?.details,
     });
+  }
+};
+
+export const downloadThumbnail = async (req, res) => {
+  try {
+    const { url, title } = req.query;
+
+    if (!url) {
+      return res.status(400).json({ message: "Thumbnail URL is required" });
+    }
+
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(url);
+    } catch {
+      return res.status(400).json({ message: "Invalid thumbnail URL" });
+    }
+
+    if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+      return res
+        .status(400)
+        .json({ message: "Only HTTP/HTTPS URLs are allowed" });
+    }
+
+    const response = await axios.get(url, { responseType: "stream" });
+    const contentType = response.headers["content-type"] || "image/png";
+    const safeTitle = (title || "Thumbnail").replace(/[\\/:*?"<>|]/g, "_");
+
+    res.setHeader("Content-Type", contentType);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="GrowthSync_${safeTitle}.png"`,
+    );
+
+    response.data.pipe(res);
+  } catch (error) {
+    logError("Thumbnail download failed", error, {
+      userId: req.user?._id?.toString?.(),
+      route: req.originalUrl,
+      method: req.method,
+      payload: {
+        url: req.query?.url || "",
+      },
+    });
+
+    res.status(500).json({ message: "Failed to download thumbnail" });
   }
 };

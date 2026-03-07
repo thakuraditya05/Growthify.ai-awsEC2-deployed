@@ -2,10 +2,12 @@ import React from "react";
 import ProjectItem from "./ProjectItem";
 import ProjectSkeleton from "./ProjectSkeleton";
 
-const RecentProjects = ({ projects = [], loading = false }) => {
+const RecentProjects = ({ projects = [], loading = false, onProjectClick }) => {
   return (
     <section>
-      <h3 className="text-brand-textPrimary text-sm font-bold mb-4">Your Projects</h3>
+      <h3 className="text-brand-textPrimary text-sm font-bold mb-4">
+        Your Projects
+      </h3>
 
       {loading ? (
         <ProjectSkeleton />
@@ -16,7 +18,11 @@ const RecentProjects = ({ projects = [], loading = false }) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {projects.map((project, index) => (
-            <ProjectItem key={project._id || index} project={project} index={index} />
+            <ProjectItem
+              key={project._id || index}
+              project={project}
+              onClick={() => onProjectClick(project._id)}
+            />
           ))}
         </div>
       )}

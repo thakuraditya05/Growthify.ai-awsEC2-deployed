@@ -1,5 +1,8 @@
 import Project from "../../models/Project.js";
-import { generateContentFromAI, generateTextFromAI } from "../../services/aiService.js";
+import {
+  generateContentFromAI,
+  generateTextFromAI,
+} from "../../services/aiService.js";
 import { logError } from "../../utils/logger.js";
 
 const parseAiJson = (raw) => {
@@ -98,7 +101,13 @@ export const refineContent = async (req, res) => {
     }
 
     const safeHistory = Array.isArray(history) ? history.slice(-8) : [];
-    const editableFields = ["script", "hook", "title", "description", "hashtags"];
+    const editableFields = [
+      "script",
+      "hook",
+      "title",
+      "description",
+      "hashtags",
+    ];
     const selectedField = editableFields.includes(targetField)
       ? targetField
       : "script";
@@ -167,7 +176,8 @@ Return ONLY valid JSON in this exact shape:
 
     return res.json({
       assistantMessage:
-        assistantMessage || "Updated. Review and ask for more changes if needed.",
+        assistantMessage ||
+        "Updated. Review and ask for more changes if needed.",
       content,
     });
   } catch (error) {
@@ -216,7 +226,9 @@ export const saveContentToProject = async (req, res) => {
         status: "draft",
       });
     } else {
-      return res.status(400).json({ message: "projectId or createNew=true is required" });
+      return res
+        .status(400)
+        .json({ message: "projectId or createNew=true is required" });
     }
 
     targetProject.topic = topic || targetProject.topic || "";
@@ -227,7 +239,7 @@ export const saveContentToProject = async (req, res) => {
     targetProject.description = normalized.description;
     targetProject.script = normalized.script;
     targetProject.hashtags = normalized.hashtags;
-    targetProject.status = "in-progress";
+    targetProject.status = "draft";
 
     await targetProject.save();
 

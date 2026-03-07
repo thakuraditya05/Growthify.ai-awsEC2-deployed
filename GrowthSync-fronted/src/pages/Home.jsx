@@ -3,10 +3,10 @@ import axios from "axios";
 import { C } from "../theme/theme.js";
 import { Context } from "../context/AuthContext.jsx";
 import StatsCards from "../components/home-widgets/StatsCards.jsx";
-import QuickActions from "../components/home-widgets/QuickActions.jsx";
+import PlatformCards from "../components/home-widgets/PlatformCards.jsx";
 import RecentProjects from "../components/home-widgets/RecentProjects.jsx";
 
-const Home = ({ onNavigate }) => {
+const Home = ({ onProjectClick }) => {
   const { user } = useContext(Context);
   const [dashboardData, setDashboardData] = useState(null);
   const [loadingDashboard, setLoadingDashboard] = useState(true);
@@ -27,18 +27,41 @@ const Home = ({ onNavigate }) => {
   }, []);
 
   return (
-    <div style={{ animation: "fadeIn 0.4s ease-out" }}>
+    <div style={{ animation: "fadeIn 0.4s ease-out" }} className="space-y-6">
       <div style={{ marginBottom: 24 }}>
-        <h1 style={{ color: C.textPrimary, fontSize: 24, fontWeight: 800, margin: 0 }}>
+        <h1
+          style={{
+            color: C.textPrimary,
+            fontSize: 24,
+            fontWeight: 800,
+            margin: 0,
+          }}
+        >
           Welcome back, {user?.name || "Creator"}
         </h1>
         <p style={{ color: C.textSecondary, fontSize: 13.5, marginTop: 6 }}>
           Here&apos;s an overview of your creator performance.
         </p>
       </div>
-      <StatsCards stats={dashboardData} loading={loadingDashboard} />
-      <QuickActions onNavigate={onNavigate} />
-      <RecentProjects projects={dashboardData?.recentProjects || []} loading={loadingDashboard} />
+
+      <section className="bg-brand-card/30 border border-brand-border rounded-2xl p-5">
+        <h2 className="text-brand-textPrimary text-sm font-bold mb-4">
+          Social Media Platform Growth
+        </h2>
+        <PlatformCards />
+      </section>
+
+      <section className="bg-brand-card/30 border border-brand-border rounded-2xl p-5">
+        <h2 className="text-brand-textPrimary text-sm font-bold mb-4">
+          Projects
+        </h2>
+        <StatsCards stats={dashboardData} loading={loadingDashboard} />
+        <RecentProjects
+          projects={dashboardData?.recentProjects || []}
+          loading={loadingDashboard}
+          onProjectClick={onProjectClick}
+        />
+      </section>
     </div>
   );
 };
