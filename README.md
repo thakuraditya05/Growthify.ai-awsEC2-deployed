@@ -339,7 +339,8 @@ GET    /api/dashboard               - Get dashboard statistics
 
 ### Deployed on AWS EC2
 
-**Live Application:** [YOUR_EC2_LINK_HERE]
+**🚀 Live Demo:** [Growthify.ai](http://13.234.113.82/)
+
 
 ### Deployment Steps
 
@@ -450,3 +451,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 ---
+
