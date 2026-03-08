@@ -1,0 +1,27 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches:
+      - main  # Agar aapki branch ka naam 'master' hai, toh yahan master likhna
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Deploy to EC2 via SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          # Yahan apne EC2 ke andar backend folder ka exact path likhna
+          cd /home/ubuntu/Growthify.ai-awsEC2-deployed/GrowthSynch-backend
+          git pull origin main
+          npm install
+          pm2 restart all
