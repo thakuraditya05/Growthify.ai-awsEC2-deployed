@@ -18,3 +18,8 @@ GrowthSync-fronted/.env
 # misc
 .DS_Store
 Thumbs.db
+
+node_modules/
+.env
+global-bundle.pem
+*.pem

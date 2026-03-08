@@ -69,12 +69,19 @@ useEffect(() => {
     if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
     return name.substring(0, 2).toUpperCase();
   };
-
+// fixed top-0 left-0
   return (
-    <header className="bg-brand-topbar border-b border-brand-border flex items-center justify-between gap-2 px-3 sm:px-6 py-2 sm:py-0 sm:h-14 shrink-0 z-40">
+    <header className=" bg-brand-topbar border-b border-brand-border flex items-center justify-between gap-2 px-3 sm:px-6 py-2 sm:py-0 sm:h-14 shrink-0 z-40">
       <div className="flex min-w-0 items-center gap-2">
-        <Rocket className="text-brand-accent shrink-0" size={20} />
-        <span className="text-brand-textPrimary font-bold text-base sm:text-lg tracking-tight truncate max-[360px]:hidden">Growthify.ai</span>
+        {/* Rocket icon ki jagah ye image tag dalo */}
+        <img 
+          src="/Growthify.png" 
+          alt="Growthify Logo" 
+          className="h-6 w-6 sm:h-8 sm:w-8 object-contain shrink-0" 
+        />
+        <span className="text-brand-textPrimary font-bold text-base sm:text-lg tracking-tight truncate max-[360px]:hidden">
+          Growthify.ai
+        </span>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
