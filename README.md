@@ -318,22 +318,21 @@ GET    /api/dashboard               - Get dashboard statistics
 
 ## 📸 Screenshots
 
-### Dashboard
-![Dashboard Screenshot](<img width="1899" height="869" alt="image" src="https://github.com/user-attachments/assets/54a91063-5024-4337-9b32-2016ba6f482d" />)
+### 📊 Dashboard
+<img src="https://github.com/user-attachments/assets/54a91063-5024-4337-9b32-2016ba6f482d" width="100%" alt="Dashboard Overview" />
 *Overview of your content performance and recent projects*
 
-### AI Content Generator
-![Content Generator Screenshot](<img width="1897" height="870" alt="image" src="https://github.com/user-attachments/assets/dcedd0bb-9b2b-45ff-b1f0-38ae21adf56c" />)
+### 🤖 AI Content Generator
+<img src="https://github.com/user-attachments/assets/dcedd0bb-9b2b-45ff-b1f0-38ae21adf56c" width="100%" alt="AI Content Generator" />
 *Generate and refine content with AI assistance*
 
-### AI Thumbnail Studio
-![Thumbnail Studio Screenshot](<img width="1908" height="874" alt="image" src="https://github.com/user-attachments/assets/fbb0bc83-894e-402a-85f1-31cf6f298ca4" />)
+### 🎨 AI Thumbnail Studio
+<img src="https://github.com/user-attachments/assets/fbb0bc83-894e-402a-85f1-31cf6f298ca4" width="100%" alt="AI Thumbnail Studio" />
 *Create professional thumbnails with AI*
 
-### Trending Content
-![Trends Screenshot](<img width="1904" height="873" alt="image" src="https://github.com/user-attachments/assets/342c591b-771d-45ec-b92b-fcd2389f9a4f" />)
+### 🔥 Trending Content
+<img src="https://github.com/user-attachments/assets/342c591b-771d-45ec-b92b-fcd2389f9a4f" width="100%" alt="Trending Content" />
 *Discover trending content across platforms*
-
 ---
 
 ## 🌐 Deployment
@@ -461,4 +460,5 @@ For support, email your-email@example.com or open an issue in the repository.
   
   ⭐ Star this repo if you find it helpful!
 </div>
+
 
