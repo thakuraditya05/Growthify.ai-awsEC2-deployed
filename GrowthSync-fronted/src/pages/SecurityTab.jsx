@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast"; // 🟢 Toast import kar liya
 import { Lock } from "lucide-react";
 import styles from "./settings.module.css";
-
-const API_BASE_URL = "http://localhost:5000";
 
 const SecurityTab = ({ onError, onSuccess }) => {
   const [securityForm, setSecurityForm] = useState({
@@ -12,38 +12,58 @@ const SecurityTab = ({ onError, onSuccess }) => {
   });
   const [savingPassword, setSavingPassword] = useState(false);
 
-  const getHeaders = () => {
+  // Axios config for token headers
+  const getAxiosConfig = () => {
     const token = localStorage.getItem("token");
     return {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` })
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` })
+      }
     };
   };
 
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
+    
+    // Check if new passwords match
     if (securityForm.newPassword !== securityForm.confirmPassword) {
-      onError("New passwords do not match.");
+      toast.error("New passwords do not match."); // 🟢 Error Toast
+      if (onError) onError("New passwords do not match.");
       return;
     }
     
     setSavingPassword(true);
-    onError(""); onSuccess("");
+    if (onError) onError(""); 
+    if (onSuccess) onSuccess("");
     
     try {
-      const response = await fetch(`${API_BASE_URL}/api/user/change-password`, {
-        method: "PUT",
-        headers: getHeaders(),
-        body: JSON.stringify({
+      // 🟢 Axios aur clean URL ka use
+      await axios.put(
+        "/api/user/change-password",
+        {
           currentPassword: securityForm.currentPassword,
           newPassword: securityForm.newPassword,
-        }),
-      });
-      if (!response.ok) throw new Error("Password update failed. Check current password.");
-      onSuccess("Password updated successfully!");
+        },
+        getAxiosConfig()
+      );
+      
+      // 🟢 Success Toast
+      toast.success("Password updated! Going to Home screen...");
+      if (onSuccess) onSuccess("Password updated successfully!");
+      
       setSecurityForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      
+      // 🟢 1.5 second baad reload, jo automatically Home (Dashboard) par le jayega
+      setTimeout(() => {
+        window.location.reload(); 
+      }, 1500);
+
     } catch (err) {
-      onError(err.message);
+      // 🟢 API Error Toast
+      const errorMsg = err.response?.data?.message || "Password update failed.";
+      toast.error(errorMsg);
+      if (onError) onError(errorMsg);
     } finally {
       setSavingPassword(false);
     }

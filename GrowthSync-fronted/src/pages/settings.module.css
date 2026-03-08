@@ -191,3 +191,59 @@
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .itemHeader {
+    padding: 14px;
+  }
+
+  .headerLeft {
+    gap: 10px;
+  }
+
+  .itemLabel {
+    font-size: 14px;
+  }
+
+  .itemContent {
+    padding: 10px 14px 16px;
+  }
+
+  .infoRow {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .btnGroup {
+    flex-direction: column;
+  }
+}
+
+:global([data-theme="light"]) .itemWrapper {
+  background: rgb(var(--brand-card-rgb) / 1);
+  border-color: rgb(var(--brand-border-rgb) / 0.16);
+}
+
+:global([data-theme="light"]) .itemLabel,
+:global([data-theme="light"]) .infoText {
+  color: rgb(var(--brand-text-primary-rgb) / 1);
+}
+
+:global([data-theme="light"]) .label,
+:global([data-theme="light"]) .infoLabel,
+:global([data-theme="light"]) .buttonSecondary {
+  color: rgb(var(--brand-text-secondary-rgb) / 1);
+}
+
+:global([data-theme="light"]) .input,
+:global([data-theme="light"]) .infoBox,
+:global([data-theme="light"]) .buttonSecondary {
+  background: rgb(var(--brand-page-rgb) / 0.6);
+  border-color: rgb(var(--brand-border-rgb) / 0.16);
+}

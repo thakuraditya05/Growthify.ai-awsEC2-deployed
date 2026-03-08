@@ -112,3 +112,38 @@
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 6px 16px rgba(0, 230, 195, 0.5);
 }
+
+@media (max-width: 640px) {
+  .trendCard {
+    padding: 16px 14px;
+    border-radius: 12px;
+  }
+
+  .saveBtn,
+  .deleteBtn,
+  .projectBtn {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
+
+:global([data-theme="light"]) .trendCard {
+  background: rgb(var(--brand-card-rgb) / 1);
+  border-color: rgb(var(--brand-border-rgb) / 0.15);
+}
+
+:global([data-theme="light"]) .saveBtn {
+  background: rgb(var(--brand-page-rgb) / 0.55);
+  color: rgb(var(--brand-text-secondary-rgb) / 1);
+  border-color: rgb(var(--brand-border-rgb) / 0.18);
+}
+
+:global([data-theme="light"]) .saveBtn:hover {
+  background: rgb(var(--brand-page-rgb) / 0.75);
+  color: rgb(var(--brand-text-primary-rgb) / 1);
+  border-color: rgb(var(--brand-border-rgb) / 0.25);
+}
+
+:global([data-theme="light"]) .projectBtn {
+  color: rgb(var(--brand-text-dark-rgb) / 1);
+}

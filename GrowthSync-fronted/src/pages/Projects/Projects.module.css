@@ -159,3 +159,76 @@
   color: #00E6C3;
   box-shadow: 0 6px 15px rgba(0, 230, 195, 0.1);
 }
+
+@media (max-width: 900px) {
+  .headerArea {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .searchFilterGroup {
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .searchInput {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filterSelect {
+    flex: 1;
+    min-width: 180px;
+  }
+
+  .projectsGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .modalContent {
+    width: calc(100% - 24px);
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .closeButton {
+    top: 10px;
+    right: 10px;
+  }
+}
+
+:global([data-theme="light"]) .searchInput,
+:global([data-theme="light"]) .filterSelect,
+:global([data-theme="light"]) .card,
+:global([data-theme="light"]) .cardImageWrapper,
+:global([data-theme="light"]) .modalContent,
+:global([data-theme="light"]) .closeButton,
+:global([data-theme="light"]) .actionBtnSecondary {
+  background: rgb(var(--brand-card-rgb) / 1);
+}
+
+:global([data-theme="light"]) .searchInput,
+:global([data-theme="light"]) .filterSelect,
+:global([data-theme="light"]) .card,
+:global([data-theme="light"]) .cardImageWrapper,
+:global([data-theme="light"]) .modalContent,
+:global([data-theme="light"]) .closeButton,
+:global([data-theme="light"]) .actionBtnSecondary {
+  border-color: rgb(var(--brand-border-rgb) / 0.15);
+}
+
+:global([data-theme="light"]) .searchInput,
+:global([data-theme="light"]) .filterSelect,
+:global([data-theme="light"]) .actionBtnSecondary {
+  color: rgb(var(--brand-text-primary-rgb) / 1);
+}
+
+:global([data-theme="light"]) .modalOverlay {
+  background: rgb(15 23 42 / 0.3);
+}

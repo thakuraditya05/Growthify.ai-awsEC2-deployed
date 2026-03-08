@@ -227,3 +227,82 @@
 .mainContainer::-webkit-scrollbar {
   display: none; /* Chrome/Safari */
 }
+
+@media (max-width: 1040px) {
+  .studioGrid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .leftPanel {
+    max-height: none;
+  }
+
+  .rightPanel {
+    min-height: 460px;
+  }
+}
+
+@media (max-width: 640px) {
+  .contextCard,
+  .uploadCard {
+    padding: 14px;
+  }
+
+  .fixedHeader {
+    padding: 12px;
+  }
+
+  .previewSection {
+    padding: 12px 12px 8px;
+  }
+
+  .inputContainer {
+    padding: 12px;
+  }
+
+  .sendBtn {
+    padding: 10px 14px;
+  }
+}
+
+:global([data-theme="light"]) .contextCard,
+:global([data-theme="light"]) .uploadCard,
+:global([data-theme="light"]) .rightPanel,
+:global([data-theme="light"]) .fixedHeader,
+:global([data-theme="light"]) .inputContainer {
+  background: rgb(var(--brand-card-rgb) / 1);
+}
+
+:global([data-theme="light"]) .contextCard,
+:global([data-theme="light"]) .uploadCard,
+:global([data-theme="light"]) .rightPanel,
+:global([data-theme="light"]) .fixedHeader,
+:global([data-theme="light"]) .inputContainer,
+:global([data-theme="light"]) .imageWrapper,
+:global([data-theme="light"]) .messageUser,
+:global([data-theme="light"]) .inputWrapper,
+:global([data-theme="light"]) .downloadBtn {
+  border-color: rgb(var(--brand-border-rgb) / 0.15);
+}
+
+:global([data-theme="light"]) .uploadBox,
+:global([data-theme="light"]) .imageWrapper,
+:global([data-theme="light"]) .inputWrapper {
+  background: rgb(var(--brand-page-rgb) / 0.58);
+}
+
+:global([data-theme="light"]) .textInput,
+:global([data-theme="light"]) .messageUser,
+:global([data-theme="light"]) .downloadBtn {
+  color: rgb(var(--brand-text-primary-rgb) / 1);
+}
+
+:global([data-theme="light"]) .messageAI,
+:global([data-theme="light"]) .uploadBox {
+  color: rgb(var(--brand-text-secondary-rgb) / 1);
+}
+
+:global([data-theme="light"]) .sendBtn {
+  color: rgb(var(--brand-text-dark-rgb) / 1);
+}

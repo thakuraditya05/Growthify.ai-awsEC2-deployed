@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { C, font } from "../theme/theme.js";
+import toast from "react-hot-toast";
+
 
 const Saves = ({ onAddToProject = () => {} }) => {
   const [loading, setLoading] = useState(true);
@@ -20,6 +22,8 @@ const Saves = ({ onAddToProject = () => {} }) => {
         });
         if (res.data?.success) {
           setSavedTrends(res.data.data || []);
+      
+
         }
       } catch (err) {
         console.error("Error fetching saved trends:", err);
@@ -48,19 +52,19 @@ const Saves = ({ onAddToProject = () => {} }) => {
 
       if (res.data?.success) {
         setSavedTrends(savedTrends.filter(t => t.trendId !== trendId));
-        alert("Trend removed from saves!");
+        toast.success("Trend removed from saves!");
       }
     } catch (error) {
       console.error("Error removing saved trend:", error);
-      alert("Failed to remove trend from saves");
+      toast.error("Failed to remove trend from saves");
     }
   };
 
   return (
     <div style={{ fontFamily: font }}>
       {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ color: C.textPrimary, fontSize: 32, fontWeight: 800 }}>Saved Trends</h1>
+      <div style={{ marginBottom: 20 }}>
+        <h1 style={{ color: C.textPrimary, fontSize: "clamp(24px, 5vw, 32px)", fontWeight: 800 }}>Saved Trends</h1>
         <p style={{ color: C.textSecondary, fontSize: 14.5 }}>Your collection of saved trends from all platforms.</p>
       </div>
 
@@ -70,7 +74,7 @@ const Saves = ({ onAddToProject = () => {} }) => {
           <Loader2 className="animate-spin" style={{ color: C.accent }} size={40} />
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
           {savedTrends?.length > 0 ? (
             savedTrends.map((t, i) => {
               let icon = null;
@@ -86,8 +90,8 @@ const Saves = ({ onAddToProject = () => {} }) => {
               
               return (
                 <div key={i} style={{ 
-                  background: "#161f2e",
-                  border: "1px solid rgba(255, 255, 255, 0.07)",
+                  background: C.bgCard,
+                  border: `1px solid ${C.border}`,
                   borderRadius: "16px",
                   padding: "22px 20px",
                   cursor: "pointer",
@@ -116,7 +120,10 @@ const Saves = ({ onAddToProject = () => {} }) => {
                       cursor: "pointer",
                       fontSize: "12.5px",
                       fontWeight: 500
-                    }} onClick={() => onAddToProject(t.title, t.platform)}>
+                    }} onClick={() => {
+                      onAddToProject(t.title, t.platform);
+                      toast.success("Trend added to project!"); // 🟢 Yahan Toast aayega
+                    }}>
                       ➕ Add to Project
                     </button>
                     <button style={{ 

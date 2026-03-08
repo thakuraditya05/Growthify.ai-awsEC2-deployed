@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast"; // 🟢 Toast import kar liya
+import Swal from 'sweetalert2';
+
 import {
   X,
   Calendar,
@@ -90,19 +93,57 @@ const ProjectModal = ({ project, onClose, refreshProjects }) => {
     });
   };
 
-  const handleDownload = () => {
-    if (!projectData.thumbnailUrl) {
-      alert("No thumbnail generated to download!");
-      return;
-    }
+const handleDownload = async () => {
+  // 1. Check if thumbnail exists
+  if (!projectData?.thumbnailUrl) {
+    toast.error("No thumbnail generated to download!"); // Alert ki jagah toast
+    return;
+  }
 
+  // 2. Loading toast start karo
+  const toastId = toast.loading("Downloading your thumbnail...");
+
+  try {
+    // 3. Axios blob request using projectData variables
+    const response = await axios.get("/api/ai/download-thumbnail", {
+      params: {
+        url: projectData.thumbnailUrl,
+        title: projectData.title || "Project",
+      },
+      responseType: "blob", // Ye image ko force-download karne ke liye zaroori hai
+    });
+
+    const objectUrl = URL.createObjectURL(response.data);
+    
+    // 4. Safe filename generate karo (purane function ka space replace logic bhi rakha hai)
+    const safeTitle = (projectData.title || "Project")
+      .replace(/\s+/g, "_") 
+      .replace(/[\\/:*?"<>|]/g, ""); // Illegal characters hata diye
+
+    // 5. Virtual Link banakar download trigger karo
     const link = document.createElement("a");
-    link.href = projectData.thumbnailUrl;
-    link.download = `${(projectData.title || "Project").replace(/\s+/g, "_")}_Thumbnail.jpg`;
+    link.href = objectUrl;
+    link.download = `${safeTitle}_Thumbnail.jpg`; // Tumhara purana naming convention
+    
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
+    URL.revokeObjectURL(objectUrl); // Memory clean up
+    
+    // 6. Download pura hone par success toast dikhao
+    toast.success("Thumbnail downloaded successfully!", { id: toastId });
+    
+  } catch (error) {
+    console.error("Thumbnail download error:", error);
+    // 7. Error aane par error toast dikhao
+    toast.error("Failed to download thumbnail.", { id: toastId });
+  }
+};
+
+
+
+
+  
 
   const handleSave = async () => {
     if (!projectData._id) return;
@@ -131,9 +172,10 @@ const ProjectModal = ({ project, onClose, refreshProjects }) => {
       setProjectData(response.data);
       await refreshProjects();
       setIsEditing(false);
+      toast.success("Project updated successfully!"); // 🟢 Toast success on update
     } catch (error) {
       console.error("Failed to update project:", error);
-      alert("Failed to save project changes.");
+      toast.error("Failed to save project changes."); // 🟢 Toast error for update failure
     } finally {
       setIsSaving(false);
     }
@@ -141,23 +183,40 @@ const ProjectModal = ({ project, onClose, refreshProjects }) => {
 
   const handleDelete = async () => {
     if (!projectData._id) {
-      alert("This is a demo project and cannot be deleted from the database.");
+      toast.error("This is a demo project and cannot be deleted."); // 🟢 Toast error for demo projects
       return;
     }
 
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this project? This cannot be undone.",
-    );
-    if (!confirmDelete) return;
+
+// 🟢 MAGIC LINE (Now with your Dark Theme Colors)
+    const result = await Swal.fire({ 
+      title: "Are you sure?", 
+      text: "This cannot be undone!", 
+      icon: "warning", 
+      showCancelButton: true, 
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+      background: C.bgSidebar,        // 🟢 Tumhari website ka dark background
+      color: C.textPrimary,           // 🟢 Tumhari website ka light text
+      confirmButtonColor: "#ef4444",  // 🔴 Danger/Red color delete button ke liye
+      cancelButtonColor: "#334155",   // ⚪ Neutral dark gray cancel button ke liye
+      iconColor: "#ff453a"            // 🔴 Warning icon ka color bhi red kar diya
+    });
+    if (!result.isConfirmed) return;
+
+
+
+
 
     try {
       setIsDeleting(true);
       await axios.delete(`/api/projects/${projectData._id}`);
       onClose();
       refreshProjects();
+      toast.success("Project deleted successfully!"); // 🟢 Toast success on deletion
     } catch (error) {
       console.error("Failed to delete project:", error);
-      alert("Failed to delete project. Please try again.");
+      toast.error("Failed to delete project. Please try again."); // 🟢 Toast error for deletion failure
     } finally {
       setIsDeleting(false);
     }
@@ -171,12 +230,16 @@ const ProjectModal = ({ project, onClose, refreshProjects }) => {
         </button>
 
         <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 20,
+          }}
         >
           <div>
             <div
               style={{
-                background: "#0f1923",
+                background: C.bgSidebar,
                 borderRadius: 12,
                 overflow: "hidden",
                 border: `1px solid ${C.border}`,
@@ -278,7 +341,7 @@ const ProjectModal = ({ project, onClose, refreshProjects }) => {
             style={{
               maxHeight: "520px",
               overflowY: "auto",
-              paddingRight: "10px",
+              paddingRight: "6px",
             }}
           >
             <div

@@ -39,7 +39,6 @@ const Schedule = () => {
     if (!newTaskText) return;
 
     if (editingTaskId) {
-      // Edit mode: Update existing task
       setTasks(tasks.map(task => task.id === editingTaskId ? {
         ...task,
         text: newTaskText,
@@ -47,9 +46,8 @@ const Schedule = () => {
         priority: newTaskPriority,
         date: activeTab === "scheduled" ? newTaskDate : "",
       } : task));
-      setEditingTaskId(null); // Exit edit mode
+      setEditingTaskId(null);
     } else {
-      // Add mode: Create new task
       const newTask = {
         id: Date.now(),
         text: newTaskText,
@@ -59,18 +57,15 @@ const Schedule = () => {
       };
       setTasks([...tasks, newTask]);
     }
-
-    // Reset Form
     resetForm();
   };
 
-  // 🟢 Edit Click Logic: Load data into form
   const handleEditClick = (task) => {
     setEditingTaskId(task.id);
     setNewTaskText(task.text);
     setNewTaskPriority(task.priority);
     setNewTaskDate(task.date || "");
-    setActiveTab(task.type); // Switch to the task's tab automatically
+    setActiveTab(task.type);
   };
 
   const resetForm = () => {
@@ -80,7 +75,6 @@ const Schedule = () => {
     setEditingTaskId(null);
   };
 
-  // Complete & Remove Task
   const handleCompleteTask = (id) => {
     setTasks(tasks.filter(task => task.id !== id));
   };
@@ -120,7 +114,12 @@ const Schedule = () => {
               <div 
                 key={dayNum} 
                 className={`${styles.dayCell} ${isSelected ? styles.active : ""}`}
-                onClick={() => setSelectedDate(new Date(year, month, dayNum))}
+                // 🟢 MAGIC HAPPENS HERE: Auto-fill date & switch tab
+                onClick={() => {
+                  setSelectedDate(new Date(year, month, dayNum)); 
+                  setNewTaskDate(thisCellDate); 
+                  setActiveTab("scheduled");
+                }}
               >
                 {dayNum}
                 
@@ -147,8 +146,8 @@ const Schedule = () => {
         <h2 className={styles.title}><ListTodo color="#10b981" /> Tasks & Planning</h2>
 
         <div className={styles.tabs}>
-          <button className={`${styles.tabBtn} ${activeTab === "scheduled" ? styles.activeTab : ""}`} onClick={() => setActiveTab("scheduled")}>Scheduled</button>
-          <button className={`${styles.tabBtn} ${activeTab === "unscheduled" ? styles.activeTab : ""}`} onClick={() => setActiveTab("unscheduled")}>Important (No Date)</button>
+          <button className={`${styles.tabBtn} ${activeTab === "scheduled" ? styles.activeTab : ""}`} onClick={() => setActiveTab("scheduled")}>Scheduled Task</button>
+          <button className={`${styles.tabBtn} ${activeTab === "unscheduled" ? styles.activeTab : ""}`} onClick={() => setActiveTab("unscheduled")}>Non Scheduled Task</button>
         </div>
 
         {/* Input Form with Priority Dropdown */}
@@ -207,7 +206,6 @@ const Schedule = () => {
                   </div>
                 </div>
 
-                {/* 🟢 Action Area: Priority Badge + Edit Button */}
                 <div className={styles.taskActions}>
                   <div className={`${styles.priorityBadge} ${
                       task.priority === 'high' ? styles.badgeHigh : 
@@ -236,3 +234,20 @@ const Schedule = () => {
 };
 
 export default Schedule;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

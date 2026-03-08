@@ -22,18 +22,18 @@ export default {
       // Yahan humne tumhare theme.js wale saare colors Tailwind mein add kar diye hain
       colors: {
         brand: {
-          page: "#0d1117",
-          sidebar: "#0f1923",
-          card: "#161f2e",
-          cardHover: "#1a2537",
-          accent: "#00E6C3",
-          accentDim: "rgba(0,230,195,0.12)",
-          textPrimary: "#E6F4F3",
-          textSecondary: "#8FB7B5",
-          muted: "rgba(143,183,181,0.45)",
-          textDark: "#0d1117",
-          border: "rgba(255,255,255,0.07)",
-          topbar: "#0f1923",
+          page: "rgb(var(--brand-page-rgb) / <alpha-value>)",
+          sidebar: "rgb(var(--brand-sidebar-rgb) / <alpha-value>)",
+          card: "rgb(var(--brand-card-rgb) / <alpha-value>)",
+          cardHover: "rgb(var(--brand-card-hover-rgb) / <alpha-value>)",
+          accent: "rgb(var(--brand-accent-rgb) / <alpha-value>)",
+          accentDim: "rgb(var(--brand-accent-rgb) / 0.12)",
+          textPrimary: "rgb(var(--brand-text-primary-rgb) / <alpha-value>)",
+          textSecondary: "rgb(var(--brand-text-secondary-rgb) / <alpha-value>)",
+          muted: "rgb(var(--brand-text-muted-rgb) / 0.45)",
+          textDark: "rgb(var(--brand-text-dark-rgb) / <alpha-value>)",
+          border: "rgb(var(--brand-border-rgb) / 0.07)",
+          topbar: "rgb(var(--brand-topbar-rgb) / <alpha-value>)",
         }
       }
     },

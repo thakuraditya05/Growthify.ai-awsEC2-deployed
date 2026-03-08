@@ -1,22 +1,28 @@
+
+
+
+
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 import { Edit3, LogOut } from "lucide-react";
 import styles from "./settings.module.css";
-
-const API_BASE_URL = "http://localhost:5000";
 
 const AccountTab = ({ isOpen, onError, onSuccess }) => {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [userData, setUserData] = useState({ name: "", email: "" });
+  
   const [accountMode, setAccountMode] = useState("view"); 
-  const [verifyPassword, setVerifyPassword] = useState("");
   const [newName, setNewName] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const getHeaders = () => {
+  const getAxiosConfig = () => {
     const token = localStorage.getItem("token");
     return {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` })
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` })
+      }
     };
   };
 
@@ -24,78 +30,68 @@ const AccountTab = ({ isOpen, onError, onSuccess }) => {
   useEffect(() => {
     if (!isOpen) {
       setAccountMode("view");
-      setVerifyPassword("");
       setNewName(userData.name);
     }
   }, [isOpen, userData.name]);
 
+  // Profile Fetch Logic (Clean URL)
   useEffect(() => {
     const fetchProfile = async () => {
       setLoadingProfile(true);
       try {
-        const response = await fetch(`${API_BASE_URL}/api/user/me`, { headers: getHeaders() });
-        if (!response.ok) throw new Error("Failed to load profile.");
-        const data = await response.json();
+        // 🟢 Yahan URL chota kar diya
+        const response = await axios.get("/api/user/me", getAxiosConfig());
+        const data = response.data;
         setUserData({ name: data?.name || "", email: data?.email || "" });
         setNewName(data?.name || "");
       } catch (err) {
-        onError("Could not load user data.",err);
+        toast.error(err.response?.data?.message || "Could not load user profile.");
+        if (onError) onError(err.response?.data?.message || "Could not load user data.");
       } finally {
         setLoadingProfile(false);
       }
     };
-    fetchProfile();
-  }, [onError]);
+    if (isOpen) fetchProfile();
+  }, [isOpen, onError]);
 
-  const handleVerifyPassword = async (e) => {
-    e.preventDefault();
-    setIsProcessing(true);
-    onError(""); onSuccess("");
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/user/verify-password`, {
-        method: "POST",
-        headers: getHeaders(),
-        body: JSON.stringify({ password: verifyPassword }),
-      });
-      if (!response.ok) throw new Error("Incorrect password.");
-      setAccountMode("edit");
-      setVerifyPassword("");
-    } catch (err) {
-      onError(err.message);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
+  // Name Update Logic (Clean URL)
   const handleNameUpdate = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
-    onError(""); onSuccess("");
+    if (onError) onError(""); 
+    if (onSuccess) onSuccess("");
+    
     try {
-      const response = await fetch(`${API_BASE_URL}/api/user/update-name`, {
-        method: "PUT",
-        headers: getHeaders(),
-        body: JSON.stringify({ name: newName }),
-      });
-      if (!response.ok) throw new Error("Update failed.");
-      onSuccess("Name updated successfully! Reloading...");
+      // 🟢 Yahan bhi URL chota kar diya
+      await axios.put(
+        "/api/user/update-name", 
+        { name: newName },
+        getAxiosConfig()
+      );
+      
+      toast.success("Name updated successfully!");
+      if (onSuccess) onSuccess("Name updated successfully! Reloading...");
+      
       setTimeout(() => window.location.reload(), 1500);
     } catch (err) {
-      onError(err.message);
+      toast.error(err.response?.data?.message || "Failed to update name.");
+      if (onError) onError(err.response?.data?.message || "Update failed.");
       setIsProcessing(false);
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    toast.success("Logged out successfully");
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 500);
   };
 
   const cancelEdit = () => {
     setAccountMode("view");
-    setVerifyPassword("");
     setNewName(userData.name);
-    onError("");
+    if (onError) onError("");
   };
 
   if (loadingProfile) return <p className={styles.label}>Loading details...</p>;
@@ -125,7 +121,7 @@ const AccountTab = ({ isOpen, onError, onSuccess }) => {
             </div>
           </div>
           <div className={styles.btnGroup}>
-            <button onClick={() => setAccountMode("verify")} className={styles.button}>
+            <button onClick={() => setAccountMode("edit")} className={styles.button}>
               <Edit3 size={16} /> Change Name
             </button>
             <button onClick={handleLogout} className={`${styles.button} ${styles.buttonDanger}`}>
@@ -133,25 +129,6 @@ const AccountTab = ({ isOpen, onError, onSuccess }) => {
             </button>
           </div>
         </div>
-      )}
-
-      {accountMode === "verify" && (
-        <form onSubmit={handleVerifyPassword}>
-          <label className={styles.label}>Enter current password to continue</label>
-          <input
-            className={styles.input} type="password" placeholder="Current Password"
-            value={verifyPassword} onChange={(e) => setVerifyPassword(e.target.value)}
-            autoFocus required
-          />
-          <div className={styles.btnGroup}>
-            <button type="submit" className={styles.button} disabled={isProcessing}>
-              {isProcessing ? "Verifying..." : "Verify"}
-            </button>
-            <button type="button" onClick={cancelEdit} className={`${styles.button} ${styles.buttonSecondary}`}>
-              Cancel
-            </button>
-          </div>
-        </form>
       )}
 
       {accountMode === "edit" && (

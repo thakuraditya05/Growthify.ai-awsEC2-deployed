@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { C, font } from "../theme/theme.js";
+import "./DashboardLayout.css";
 
 import Topbar from "../components/layout/Topbar.jsx";
 import Sidebar from "../components/layout/Sidebar.jsx";
@@ -59,6 +60,14 @@ const DashboardLayout = () => {
     setActiveNav("Project Workspace");
   };
 
+  
+// 🟢 YAHAN THA ERROR: Ye function pehli file se missing tha, jo maine add kar diya hai!
+  const handleAddToProject = (topic, platform) => {
+    setContentGeneratorData({ topic, platform });
+    setActiveNav("Content Generator");
+  };
+
+
   const renderContent = () => {
     switch (activeNav) {
       case "Dashboard":
@@ -105,20 +114,28 @@ const DashboardLayout = () => {
 
   return (
     <div
+      className="dashboardShell"
       style={{
         minHeight: "100vh",
         background: C.bgPage,
         fontFamily: font,
-        display: "flex",
-        flexDirection: "column",
       }}
     >
-      <Topbar onCreateProject={createProject} />
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+
+    {/* 🟢 UPDATE: Topbar ko onSettingsClick prop bhi pass kiya */}
+      <Topbar 
+        onCreateProject={createProject} 
+        onSettingsClick={() => setActiveNav("Settings")} 
+      />
+
+      <div className="dashboardBody">
+
         <Sidebar activeItem={activeNav} onNavigate={handleNavigate} />
-        <main style={{ flex: 1, padding: "28px 32px", overflowY: "auto" }}>
+        <main className="dashboardMain">
           {renderContent()}
         </main>
+
+
       </div>
     </div>
   );

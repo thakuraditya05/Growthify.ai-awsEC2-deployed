@@ -3,6 +3,8 @@ import axios from "axios"; // API calls ke liye
 import { Loader2 } from "lucide-react";
 import { C, font } from "../../theme/theme.js";
 import { YoutubeTrends, RedditTrends, XTrends, MusicTrends } from "./PlatformViews";
+import toast from "react-hot-toast";
+
 
 const platformTabs = [
   { id: 'yt', label: 'YouTube' },
@@ -99,12 +101,13 @@ const Trends = () => {
       if (res.data?.success) {
         setSavedTrendIds([...savedTrendIds, payload.trendId]);
         setSavedTrends([...savedTrends, res.data.data]);
-        alert("Trend saved successfully!");
+        toast.success("Trend saved successfully!");
+
       }
     } catch (error) {
       console.error("Error saving trend:", error);
       console.error("Error response:", error.response?.data);
-      alert(error.response?.data?.message || "Failed to save trend");
+      toast.error(error.response?.data?.message || "Failed to save trend");
     }
   };
 
@@ -134,27 +137,27 @@ const Trends = () => {
       if (res.data?.success) {
         setSavedTrendIds(savedTrendIds.filter(id => id !== trendId));
         setSavedTrends(savedTrends.filter(t => t.trendId !== trendId));
-        alert("Trend removed from saves!");
+        toast.success("Trend removed from saves!");
       }
     } catch (error) {
       console.error("Error removing saved trend:", error);
-      alert("Failed to remove trend from saves");
+      toast.error("Failed to remove trend from saves");
     }
   };
 
   return (
     <div style={{ fontFamily: font }}>
       {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ color: C.textPrimary, fontSize: 32, fontWeight: 800 }}>Explore Trends</h1>
+      <div style={{ marginBottom: 20 }}>
+        <h1 style={{ color: C.textPrimary, fontSize: "clamp(24px, 5vw, 32px)", fontWeight: 800 }}>Explore Trends</h1>
         <p style={{ color: C.textSecondary, fontSize: 14.5 }}>Discover real-time topics across platforms.</p>
       </div>
 
       {/* Tabs */}
-      <div style={{ display: "flex", gap: 32, marginBottom: 20, borderBottom: `1px solid ${C.border}` }}>
+      <div style={{ display: "flex", gap: 20, marginBottom: 20, borderBottom: `1px solid ${C.border}`, overflowX: "auto", paddingBottom: 2 }}>
         {platformTabs.map(tab => (
           <div key={tab.id} onClick={() => setActivePlatform(tab.id)}
-            style={{ paddingBottom: 12, cursor: "pointer", borderBottom: activePlatform === tab.id ? `2px solid ${C.accent}` : "2px solid transparent" }}>
+            style={{ paddingBottom: 12, cursor: "pointer", borderBottom: activePlatform === tab.id ? `2px solid ${C.accent}` : "2px solid transparent", whiteSpace: "nowrap" }}>
             <span style={{ color: activePlatform === tab.id ? C.accent : C.textSecondary, fontSize: 14, fontWeight: activePlatform === tab.id ? 600 : 400 }}>
               {tab.label}
             </span>

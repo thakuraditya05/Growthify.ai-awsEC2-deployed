@@ -4,6 +4,8 @@ import { Plus, Download, Sparkles, Image as ImageIcon, Loader2 } from "lucide-re
 import { C, font } from "../../theme/theme.js";
 import styles from "./ThumbnailStudio.module.css";
 import useProjects from "../../hooks/useProjects.js";
+import toast from "react-hot-toast"; // 🟢 Toast import kar liya
+
 
 const ThumbnailStudio = ({ linkedProjectId = "" }) => {
   // --- Form State ---
@@ -104,8 +106,12 @@ const ThumbnailStudio = ({ linkedProjectId = "" }) => {
     }
   };
 
+// 🟢 DOWNLOAD LOGIC UPDATE
   const handleDownload = async () => {
     if (!generatedThumbnail) return;
+
+    // Loading toast start karo
+    const toastId = toast.loading("Downloading your thumbnail...");
 
     try {
       const response = await axios.get("/api/ai/download-thumbnail", {
@@ -125,13 +131,17 @@ const ThumbnailStudio = ({ linkedProjectId = "" }) => {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(objectUrl);
+
+      // 🟢 Download pura hone par success toast dikhao
+      toast.success("Thumbnail downloaded successfully!", { id: toastId });
     } catch (error) {
       console.error("Thumbnail download error:", error);
+      // 🟢 Error aane par error toast dikhao
+      toast.error("Failed to download thumbnail.", { id: toastId });
     }
   };
-
   return (
-    <div style={{ fontFamily: font, animation: "fadeIn 0.3s ease", padding: "20px" }}>
+    <div style={{ fontFamily: font, animation: "fadeIn 0.3s ease", padding: "clamp(0px, 2vw, 20px)" }}>
       <div className={styles.studioGrid}>
         
         {/* --- LEFT PANEL: INPUT CONTROLS --- */}
@@ -334,250 +344,3 @@ export default ThumbnailStudio;
 
 
 
-
-
-
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import styles from "./ThumbnailStudio.module.css";
-// import ThumbnailForm from "./ThumbnailForm";
-// import ReferenceUpload from "./ReferenceUpload";
-// import ThumbnailPreview from "./ThumbnailPreview";
-// import { useThumbnail } from "./useThumbnail";
-
-// const ThumbnailStudio = () => {
-
-//   const { generateThumbnail, isGenerating, thumbnail, error } = useThumbnail();
-
-//   const [formData, setFormData] = useState({
-//     title: "",
-//     mood: "Dramatic",
-//     colorPreference: "",
-//     userDescription: "",
-//     projectId: "",
-//     createNew: false,
-//   });
-
-//   const [uploadedPhoto, setUploadedPhoto] = useState(null);
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-
-//     generateThumbnail({
-//       ...formData,
-//       projectId: formData.projectId || undefined,
-//     });
-//   };
-
-//   const handleDownload = () => {
-//     if (!thumbnail) return;
-//     const link = document.createElement("a");
-//     link.href = thumbnail;
-//     link.download = "thumbnail.png";
-//     link.click();
-//   };
-
-//   return (
-//     <div className={styles.studioGrid}>
-
-//       {/* LEFT PANEL */}
-//       <div className={styles.leftPanel}>
-
-//         <div className={styles.contextCard}>
-//           <ThumbnailForm
-//             formData={formData}
-//             setFormData={setFormData}
-//             onSubmit={handleSubmit}
-//             isGenerating={isGenerating}
-//           />
-//           {error && <p style={{ color: "red" }}>{error}</p>}
-//         </div>
-
-//         <ReferenceUpload
-//           uploadedPhoto={uploadedPhoto}
-//           setUploadedPhoto={setUploadedPhoto}
-//         />
-
-//       </div>
-
-//       {/* RIGHT PANEL */}
-//       <ThumbnailPreview
-//         thumbnail={thumbnail}
-//         isGenerating={isGenerating}
-//         onDownload={handleDownload}
-//       />
-
-//     </div>
-//   );
-// };
-
-// export default ThumbnailStudio;
-
-
-
-
-
-
-// import React, { useState, useRef } from "react";
-// import { Youtube, Plus, Download, Send, Sparkles, User, Image as ImageIcon } from "lucide-react";
-// import { C, font } from "../../theme/theme.js";
-// import styles from "./ThumbnailStudio.module.css";
-
-// const ThumbnailStudio = () => {
-//   const [inputText, setInputText] = useState("");
-//   const [isGenerating, setIsGenerating] = useState(false);
-//   const [uploadedPhoto, setUploadedPhoto] = useState(null);
-//   const [generatedThumbnail, setGeneratedThumbnail] = useState(null); 
-  
-//   const fileInputRef = useRef(null);
-
-//   const [chatHistory, setChatHistory] = useState([
-//     { role: "ai", content: "GrowthSync AI is ready! Describe the thumbnail you want to generate." }
-//   ]);
-
-//   const projectContext = {
-//     name: "AI Workforce Future",
-//     title: "AI Is Replacing Entry-Level Jobs",
-//     summary: "Exploring the impact of automation on early-career positions and skills."
-//   };
-
-//   const handlePhotoUpload = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       const imageUrl = URL.createObjectURL(file);
-//       setUploadedPhoto(imageUrl);
-//     }
-//   };
-
-//   const handleSendMessage = (e) => {
-//     e.preventDefault();
-//     if (!inputText.trim()) return;
-
-//     setChatHistory(prev => [...prev, { role: "user", content: inputText }]);
-//     setInputText("");
-//     setIsGenerating(true);
-
-//     setTimeout(() => {
-//       setChatHistory(prev => [...prev, { role: "ai", content: "Thumbnail generated successfully! You can ask me to tweak the colors or text style if needed." }]);
-//       setGeneratedThumbnail("https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop"); 
-//       setIsGenerating(false);
-//     }, 2000);
-//   };
-
-//   const handleDownload = () => {
-//     if (!generatedThumbnail) return;
-//     const link = document.createElement('a');
-//     link.href = generatedThumbnail;
-//     link.download = 'GrowthSync_Thumbnail.png';
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link);
-//   };
-
-//   return (
-//     <div style={{ fontFamily: font, animation: "fadeIn 0.3s ease" }}>
-//       <div className={styles.studioGrid}>
-        
-//         <div className={styles.leftPanel}>
-//           <div className={styles.contextCard}>
-//             <h3 style={{ color: C.textPrimary, fontSize: 16, marginBottom: 16 }}>Project Context</h3>
-//             <div style={{ color: C.textSecondary, fontSize: 13, lineHeight: 1.8 }}>
-//               <div>Project Name: <span style={{color: C.textPrimary}}>{projectContext.name}</span></div>
-//               <div style={{display: 'flex', alignItems: 'center', gap: 5}}>
-//                 Platform: <Youtube size={14} color="#ff0000"/> <span style={{color: C.textPrimary}}>YouTube</span>
-//               </div>
-//               <div style={{marginTop: 8}}>Content Title:<br/><span style={{color: C.textPrimary, fontWeight: 600}}>{projectContext.title}</span></div>
-//               <div style={{marginTop: 12}}>Short script summary:<br/><span style={{color: C.textPrimary}}>{projectContext.summary}</span></div>
-//             </div>
-//           </div>
-
-//           <div className={styles.uploadCard}>
-//             <h3 style={{ color: C.textPrimary, fontSize: 16, marginBottom: 16 }}>Creator Image</h3>
-//             <input type="file" accept="image/*" ref={fileInputRef} onChange={handlePhotoUpload} style={{ display: "none" }} />
-//             <div className={styles.uploadBox} onClick={() => fileInputRef.current.click()}>
-//               {uploadedPhoto ? (
-//                 <img src={uploadedPhoto} alt="Uploaded" style={{width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px"}} />
-//               ) : (
-//                 <>
-//                   <Plus size={24} />
-//                   <span style={{ fontSize: 13, fontWeight: 500 }}>Upload Your Photo</span>
-//                 </>
-//               )}
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className={styles.rightPanel}>
-//             <div className={styles.fixedHeader}>
-//                 <h2 style={{ color: C.textPrimary, fontSize: 18, fontWeight: 700, margin: 0 }}>
-//                 Designing Thumbnail For: <span style={{color: C.textSecondary}}>{projectContext.title}</span>
-//                 </h2>
-//             </div>
-          
-//           <div className={styles.scrollableArea}>
-//             <div className={`${styles.previewSection}`}>
-//               <div className={styles.imageWrapper}>
-//                 {generatedThumbnail ? (
-//                   <>
-//                     <img src={generatedThumbnail} alt="AI Generated Thumbnail" className={styles.thumbnailImage} />
-//                     <button className={styles.downloadBtn} onClick={handleDownload}>
-//                       <Download size={14} /> Download
-//                     </button>
-//                   </>
-//                 ) : (
-//                   <div style={{color: C.textMuted, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10}}>
-//                     <ImageIcon size={40} opacity={0.5} />
-//                     <span>Awaiting prompt...</span>
-//                   </div>
-//                 )}
-//               </div>
-//             </div>
-
-//             <div style={{ padding: "0 24px" }}>
-//               <h3 style={{ color: C.textPrimary, fontSize: 16, margin: "10px 0 0 0" }}>Refine with AI</h3>
-//             </div>
-
-//             <div className={styles.chatArea}>
-//               {chatHistory.map((msg, idx) => (
-//                 <div key={idx} className={`${styles.messageRow} ${msg.role === 'ai' ? styles.messageAI : styles.messageUser}`}>
-//                   {msg.role === 'ai' && (
-//                     <div style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(0, 230, 195, 0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-//                       <Sparkles size={12} color={C.accent} />
-//                     </div>
-//                   )}
-//                   <div>{msg.content}</div>
-//                 </div>
-//               ))}
-//               {isGenerating && <div style={{color: C.accent, fontSize: 13}}>Generating new image variations...</div>}
-//             </div>
-            
-//           </div>
-          
-//           <form onSubmit={handleSendMessage} className={styles.inputContainer}>
-//             <div className={styles.inputWrapper}>
-//                 <input 
-//                 type="text" 
-//                 value={inputText}
-//                 onChange={(e) => setInputText(e.target.value)}
-//                 placeholder="Ask AI to change colors, swap background, or make text bolder..." 
-//                 className={styles.textInput}
-//                 disabled={isGenerating}
-//                 />
-//                 <button type="submit" className={styles.sendBtn} disabled={isGenerating || !inputText.trim()}>
-//                 {isGenerating ? "..." : "Send"}
-//                 </button>
-//             </div>
-//           </form>
-
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ThumbnailStudio;
