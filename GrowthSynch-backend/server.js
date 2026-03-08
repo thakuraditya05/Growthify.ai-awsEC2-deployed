@@ -13,10 +13,6 @@ dns.setServers(["8.8.8.8", "1.1.1.1"]);
 mongoose.connect(MONGO_URI || process.env.MONGO_URI)
   .then(async () => {
     console.log("✅ MongoDB Connected");
-    
-    // Log HF Key (Aapne pehle block mein rakha tha)
-    console.log("Using HF Key:", process.env.HUGGINFACE_API_TOKEN);
-
     // 1. Ek baar server start hote hi data fetch karlo
     try {
       await runAllCronJobs();

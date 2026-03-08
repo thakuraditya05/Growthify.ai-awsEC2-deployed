@@ -334,3 +334,12 @@
 :global([data-theme="light"]) .taskText {
   color: rgb(var(--brand-text-primary-rgb) / 1);
 }
+
+:global([data-theme="light"]) .dayCell,
+:global([data-theme="light"]) .calendarHeader {
+  color: rgb(var(--brand-text-primary-rgb) / 1);
+}
+
+:global([data-theme="light"]) .calendarHeader button {
+  color: rgb(var(--brand-text-primary-rgb) / 1) !important;
+}
