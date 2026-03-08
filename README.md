@@ -433,13 +433,6 @@ Contributions are welcome! Please follow these steps:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-
-## 👥 Authors
-
-- **Your Name** - *Initial work* - [GitHub Profile](https://github.com/yourusername)
-
----
-
 ## 🙏 Acknowledgments
 
 - AWS Bedrock for AI capabilities
@@ -449,16 +442,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📞 Support
-
-For support, email your-email@example.com or open an issue in the repository.
-
----
 
 <div align="center">
-  Made with ❤️ by the GrowthSync Team
-  
+  Made with ❤️ by the Growthify.ai Team
   ⭐ Star this repo if you find it helpful!
 </div>
 
 
+---
