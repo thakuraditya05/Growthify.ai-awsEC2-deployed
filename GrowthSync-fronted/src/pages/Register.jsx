@@ -37,7 +37,7 @@ const Register = () => {
         style={{ width: "100%", maxWidth: 420, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, padding: 24 }}
       >
         <h1 style={{ color: C.textPrimary, fontSize: 28, margin: 0 }}>Register</h1>
-        <p style={{ color: C.textSecondary, fontSize: 13, marginTop: 8 }}>Create your GrowthSync account.</p>
+        <p style={{ color: C.textSecondary, fontSize: 13, marginTop: 8 }}>Create your Growthify.ai account.</p>
 
         <div style={{ marginTop: 16 }}>
           <label style={{ color: C.textSecondary, fontSize: 12 }}>Name</label>

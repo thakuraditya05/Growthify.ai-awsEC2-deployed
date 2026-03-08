@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+﻿import mongoose from "mongoose";
+import { docDbConnection } from "../../db.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,12 +18,12 @@ const userSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      required: false, // optional for Google users
+      required: false,
     },
   },
   { timestamps: true },
 );
 
-const User = mongoose.model("User", userSchema);
+const User = docDbConnection.models.User || docDbConnection.model("User", userSchema);
 
 export default User;

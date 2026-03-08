@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+﻿import mongoose from "mongoose";
+import { docDbConnection } from "../../db.js";
 
 const projectSchema = new mongoose.Schema(
   {
@@ -62,4 +63,7 @@ const projectSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.model("Project", projectSchema);
+const Project =
+  docDbConnection.models.Project || docDbConnection.model("Project", projectSchema);
+
+export default Project;

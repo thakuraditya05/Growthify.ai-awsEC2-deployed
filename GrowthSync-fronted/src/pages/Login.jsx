@@ -37,7 +37,7 @@ const Login = () => {
         style={{ width: "100%", maxWidth: 420, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, padding: 24 }}
       >
         <h1 style={{ color: C.textPrimary, fontSize: 28, margin: 0 }}>Login</h1>
-        <p style={{ color: C.textSecondary, fontSize: 13, marginTop: 8 }}>Access your GrowthSync dashboard.</p>
+        <p style={{ color: C.textSecondary, fontSize: 13, marginTop: 8 }}>Access your Growthify.ai dashboard.</p>
 
         <div style={{ marginTop: 16 }}>
           <label style={{ color: C.textSecondary, fontSize: 12 }}>Email</label>

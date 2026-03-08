@@ -1,15 +1,18 @@
-import mongoose from "mongoose";
+﻿import mongoose from "mongoose";
+import { atlasConnection } from "../../db.js";
 
 const trendingXSchema = new mongoose.Schema(
   {
     hashtag: {
       type: String,
-      unique: true
+      unique: true,
     },
-    count: Number
+    count: Number,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
+const TrendingX =
+  atlasConnection.models.TrendingX || atlasConnection.model("TrendingX", trendingXSchema);
 
-export default mongoose.model("TrendingX", trendingXSchema);
+export default TrendingX;

@@ -1,55 +1,58 @@
-import mongoose from "mongoose";
+﻿import mongoose from "mongoose";
+import { atlasConnection } from "../../db.js";
 
 const savedTrendSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
 
   platform: {
     type: String,
     enum: ["youtube", "youtube_music", "reddit", "X"],
-    required: true
+    required: true,
   },
 
   trendId: {
     type: String,
-    required: true
+    required: true,
   },
 
   title: {
     type: String,
-    required: true
+    required: true,
   },
 
   views: {
     type: Number,
-    default: 0
+    default: 0,
   },
 
   likes: {
     type: Number,
-    default: 0
+    default: 0,
   },
 
   comments: {
     type: Number,
-    default: 0
+    default: 0,
   },
 
   description: {
     type: String,
-    default: ""
+    default: "",
   },
 
   savedAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-// Ensure one user can't save the same trend twice
 savedTrendSchema.index({ userId: 1, trendId: 1, platform: 1 }, { unique: true });
 
-export default mongoose.model("SavedTrend", savedTrendSchema);
+const SavedTrend =
+  atlasConnection.models.SavedTrend || atlasConnection.model("SavedTrend", savedTrendSchema);
+
+export default SavedTrend;

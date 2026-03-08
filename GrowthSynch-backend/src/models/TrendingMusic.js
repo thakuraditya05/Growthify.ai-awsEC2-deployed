@@ -1,41 +1,45 @@
-import mongoose from "mongoose";
+﻿import mongoose from "mongoose";
+import { atlasConnection } from "../../db.js";
 
-const trendingMusicSchema = new mongoose.Schema({
+const trendingMusicSchema = new mongoose.Schema(
+  {
     timestamp: {
-        type: Date,
-        default: Date.now,
-        expires: 60 * 60 * 24 * 3   // 3 days TTL
+      type: Date,
+      default: Date.now,
+      expires: 60 * 60 * 24 * 3,
     },
 
     videoId: {
-        type: String,
-        required: true,
-        index: true
+      type: String,
+      required: true,
+      index: true,
     },
 
     title: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
     views: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
 
     likes: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
 
     comments: {
-        type: Number,
-        default: 0
-    }
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: false },
+);
 
-}, { timestamps: false });
+const TrendingMusic =
+  atlasConnection.models.TrendingMusic ||
+  atlasConnection.model("TrendingMusic", trendingMusicSchema);
 
-
-
-
-export default mongoose.model("TrendingMusic", trendingMusicSchema);
+export default TrendingMusic;
